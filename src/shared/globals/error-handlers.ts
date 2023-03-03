@@ -12,6 +12,8 @@ export interface IError {
   statusCode: number;
   message: string;
 }
+
+
 export abstract class CustomError extends Error {
   abstract status: string;
   abstract statusCode: number;
@@ -24,6 +26,14 @@ export abstract class CustomError extends Error {
       statusCode: this.statusCode,
       message: this.message
     };
+  }
+}
+export class JoiRequestValidationError extends CustomError {
+  statusCode = StatusCodes.BAD_REQUEST;
+  status = 'error';
+
+  constructor(message: string) {
+    super(message);
   }
 }
 

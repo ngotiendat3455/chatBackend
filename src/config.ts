@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import bunyan from 'bunyan';
+import cloudinary from 'cloudinary';
 
 dotenv.config({});
 
@@ -11,6 +12,9 @@ class Config {
   public CLIENT_URL: string | undefined;
   public NODE_ENV: string | undefined;
   public REDIS_HOST: string | undefined;
+  public CLOUD_NAME: string | undefined;
+  public COLOUD_API: string| undefined;
+  public CLOUD_SECRET: string | undefined;
 
   constructor() {
     this.DATABASE_URL = process.env.DATABASE_URL || '';
@@ -21,8 +25,18 @@ class Config {
     this.DATABASE_URL = process.env.DATABASE_URL || '';
     this.NODE_ENV = process.env.NODE_ENV || '';
     this.REDIS_HOST = process.env.REDIS_HOST || '';
+    this.CLOUD_NAME = process.env.CLOUD_NAME || '';
+    this.COLOUD_API = process.env.COLOUD_API || '';
+    this.CLOUD_SECRET = process.env.CLOUD_SECRET || '';
   }
 
+  public cloudinaryConfig(){
+    return cloudinary.v2.config({
+      cloud_name: this.CLOUD_NAME,
+      api_key: this.COLOUD_API,
+      api_secret: this.CLOUD_SECRET
+    });
+  }
   public validateConfig() {
     for (const [k, v] of Object.entries(this)) {
       if (v === undefined) throw new Error(`Configuration ${k} is undifined`);
