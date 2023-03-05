@@ -1,3 +1,4 @@
+import { authQueue } from './../../../shared/services/queues/auth.queue';
 import { IAuthDocument } from './../interfaces/auth.interface';
 import { ObjectId } from 'mongodb';
 import { IAuthPayload, ISignUpData } from '@auth/interfaces/auth.interface';
@@ -8,7 +9,11 @@ import { Helpers } from '@global/helpers/helpers';
 import AuthService from '@service/db/auth.service';
 import { Request, Response } from 'express';
 import { uploads } from '@global/cloudinary-upload';
-
+import { StatusCodes } from 'http-status-codes';
+import { IUserDocument } from '@user/interfaces/user.interface';
+import { UserCache } from '@service/redis/user.cache';
+import userQueue from '@service/queues/user.queue';
+const userCache: UserCache = new UserCache();
 export class SignUp {
     @joiValidation(signupSchema)
     public async create(req:Request, res: Response): Promise<void>{
@@ -34,6 +39,20 @@ export class SignUp {
         if(!result?.public_id){
             throw new BadRequestError('File Upload: Error occurred. Try again');
         }
+         // Add to redis cache
+        const userDataForCache: IUserDocument = SignUp.prototype.userData(authData, userObjectId);
+        userDataForCache.profilePicture = `https://res.cloudinary.com/dyamr9ym3/image/upload/v${result.version}/${userObjectId}`;
+        await userCache.saveUserToCache(`${userObjectId}`, uId, userDataForCache);
+        authQueue.addAuthUserJob('addAuthUserToDB', {
+            value: authData,
+        });
+        userQueue.addUserJobToDB('addUserToDb', {
+            value: userDataForCache
+        });
+        res.status(StatusCodes.CREATED).json({
+            message: 'User created successfully',
+            authData
+        });
     }
     private signUpData(data: ISignUpData): IAuthDocument{
         return {
@@ -45,4 +64,41 @@ export class SignUp {
             avatarColor: data.avatarColor
         } as IAuthDocument;
     }
+
+  private userData(data: IAuthDocument, userObjectId: ObjectId): IUserDocument {
+    const { _id, username, email, uId, password, avatarColor } = data;
+    return {
+      _id: userObjectId,
+      authId: _id,
+      uId,
+      username: Helpers.firstLetterUppercase(username),
+      email,
+      password,
+      avatarColor,
+      profilePicture: '',
+      blocked: [],
+      blockedBy: [],
+      work: '',
+      location: '',
+      school: '',
+      quote: '',
+      bgImageVersion: '',
+      bgImageId: '',
+      followersCount: 0,
+      followingCount: 0,
+      postsCount: 0,
+      notifications: {
+        messages: true,
+        reactions: true,
+        comments: true,
+        follows: true
+      },
+      social: {
+        facebook: '',
+        instagram: '',
+        twitter: '',
+        youtube: ''
+      }
+    } as unknown as IUserDocument;
+  }
 }

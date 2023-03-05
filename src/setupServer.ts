@@ -10,6 +10,7 @@ import { Server } from 'socket.io';
 import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';
 import applicationRoute from '@root/routes';
+import 'express-async-errors';
 import { CustomError, IErrorResponse } from './shared/globals/error-handlers';
 import { StatusCodes } from 'http-status-codes';
 // import { config } from './config';
@@ -32,7 +33,7 @@ export class ChattyServer {
     // this.startHttpServer(this.app)
   }
   private securityMiddleware(app: Application) {
-    this.app.use(
+    app.use(
       cookieSection({
         name: 'sesstion',
         keys: ['test1', 'test2'],
@@ -40,9 +41,9 @@ export class ChattyServer {
         secure: true
       })
     );
-    this.app.use(hpp());
-    this.app.use(helmet());
-    this.app.use(
+    app.use(hpp());
+    app.use(helmet());
+    app.use(
       cors({
         origin: '*',
         credentials: true,
@@ -52,13 +53,13 @@ export class ChattyServer {
     );
   }
   private standardMiddleware(app: Application) {
-    this.app.use(compression());
-    this.app.use(
+    app.use(compression());
+    app.use(
       json({
         limit: '50mb'
       })
     );
-    this.app.use(
+    app.use(
       urlencoded({
         extended: true,
         limit: '50mb'
@@ -69,13 +70,15 @@ export class ChattyServer {
     applicationRoute(app);
   }
   private globalErrorHandler(app: Application) {
-    app.use('*', (error: IErrorResponse, req: Request, res: Response, next: NextFunction) => {
+    app.all('*', (error: IErrorResponse, req: Request, res: Response, next: NextFunction) => {
+      log.error('all',error);
       res.status(StatusCodes.NOT_FOUND).json({
         message: `${req.originalUrl} not found`
       });
     });
 
     app.use((error: IErrorResponse, req: Request, res: Response, next: NextFunction) => {
+      log.error('instance',error);
       if (error instanceof CustomError) {
         res.status(error.statusCode).json(error.serializeErrors());
       }
@@ -90,6 +93,7 @@ export class ChattyServer {
       // this.socketIOConnections(socketIO);
     } catch (error) {
       log.error(error);
+      console.log(error);
     }
   }
   private async createSocketIO(httpServer: http.Server): Promise<Server> {

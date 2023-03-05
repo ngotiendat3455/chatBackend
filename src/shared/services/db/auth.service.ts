@@ -14,6 +14,9 @@ class AuthService {
         const user = await AuthModel.findOne(query).exec() as IAuthDocument;
         return user;
     }
+    public async createAuthUser(data:IAuthDocument){
+        await AuthModel.create(data);
+    }
 }
 
 const authService = new AuthService();
