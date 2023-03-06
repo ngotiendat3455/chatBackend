@@ -11,6 +11,14 @@ export class Helpers {
       return str.toLowerCase();
     }
   
+    static parseJson(prop: string): any {
+      try {
+        JSON.parse(prop);
+      } catch (error) {
+        return prop;
+      }
+      return JSON.parse(prop);
+    }
     static generateRandomIntegers(integerLength: number): number {
       const characters = '0123456789';
       let result = ' ';
