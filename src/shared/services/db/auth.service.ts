@@ -29,6 +29,17 @@ class AuthService {
   public async updatePasswordToken(userId: string, passwordToken: string, passwordResetExpires: number) {
     await AuthModel.updateOne({ _id: userId }, { passwordResetToken: passwordToken, passwordResetExpires: passwordResetExpires });
   }
+  public async getAuthUserByPasswordToken(token: string) {
+    const user: IAuthDocument = (
+      await AuthModel.findOne({
+        passwordResetToken: token,
+        passwordResetExpires: {
+          $gt: Date.now()
+        }
+      }).exec()
+    ) as IAuthDocument;
+    return user;
+  }
 }
 
 const authService = new AuthService();
