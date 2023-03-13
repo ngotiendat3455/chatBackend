@@ -1,4 +1,4 @@
-import { JWT } from 'jsonwebtoken';
+import JWT from 'jsonwebtoken';
 import { ObjectId } from 'mongodb';
 import { IAuthDocument, IAuthPayload, ISignUpData } from '@auth/interfaces/auth.interface';
 import { signupSchema } from '@auth/schemas/siginup';

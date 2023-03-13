@@ -16,6 +16,11 @@ class Config {
   public COLOUD_API: string| undefined;
   public CLOUD_SECRET: string | undefined;
 
+  public SENDER_EMAIL: string | undefined;
+  public SENDER_EMAIL_PASSWORD: string | undefined;
+  public SENDGRID_API_KEY: string | undefined;
+  public SENDGRID_SENDER: string | undefined;
+
   constructor() {
     this.DATABASE_URL = process.env.DATABASE_URL || '';
     this.JWT_TOKEN = process.env.JWT_TOKEN || '1234';
@@ -28,6 +33,10 @@ class Config {
     this.CLOUD_NAME = process.env.CLOUD_NAME || '';
     this.COLOUD_API = process.env.COLOUD_API || '';
     this.CLOUD_SECRET = process.env.CLOUD_SECRET || '';
+    this.SENDER_EMAIL = process.env.SENDER_EMAIL || '';
+    this.SENDER_EMAIL_PASSWORD = process.env.SENDER_EMAIL_PASSWORD || '';
+    this.SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || '';
+    this.SENDGRID_SENDER = process.env.SENDGRID_SENDER || '';
   }
 
   public cloudinaryConfig(){

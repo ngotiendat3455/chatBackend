@@ -3,7 +3,8 @@ import Mail from 'nodemailer/lib/mailer';
 import Logger from 'bunyan';
 import sendGridMail from '@sendgrid/mail';
 import { config } from '@root/config';
-import { BadRequestError } from '@global/helpers/error-handler';
+import { BadRequestError } from '@global/error-handlers';
+
 
 interface IMailOptions {
   from: string;

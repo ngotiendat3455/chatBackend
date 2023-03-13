@@ -23,7 +23,7 @@ class AuthService {
     return user;
   }
   public async getAuthUserByEmail(email: string): Promise<IAuthDocument> {
-    const user: IAuthDocument = (await AuthModel.findOne({ email: Helpers.firstLetterUppercase(email) }).exec()) as IAuthDocument;
+    const user: IAuthDocument = (await AuthModel.findOne({ email: email }).exec()) as IAuthDocument;
     return user;
   }
   public async updatePasswordToken(userId: string, passwordToken: string, passwordResetExpires: number) {
