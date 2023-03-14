@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon -r tsconfig-paths/register src/app.ts | bunyan",
-    "test": "jest --coverage=true -w=1 --forceExit --detectOpenHandles --watchAll=false",
+    "test": "jest --coverage=true -w=1 --forceExit --detectOpenHandles --watchAll=false --verbose",
     "lint:check": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "prettier:check": "prettier --check src/**/*.{ts,json}",
