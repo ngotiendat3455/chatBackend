@@ -9,7 +9,8 @@ export interface IMovieCategoryDocument extends Document {
   createUserId: string,
   updateUserId: string,
   createdAt: Date,
-  updateAt: Date
+  updateAt: Date,
+  fee?:boolean
 }
 
 export interface IGetMovieCategoryQuery {

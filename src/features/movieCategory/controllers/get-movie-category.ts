@@ -16,6 +16,6 @@ export class Get {
       // const cachedPosts: IPostDocument[] = await postCache.getPostsFromCache('post', newSkip, limit);
       const movieCategory: IMovieCategoryDocument[]  = await movieCategoryService.getMovieCategory({}, skip, limit, { createdAt: -1 });
       totalPosts = await movieCategoryService.movieCategoryCount();
-      res.status(HTTP_STATUS.OK).json({ data: movieCategory, totalPosts });
+      res.status(HTTP_STATUS.OK).json({ data: movieCategory, totalCount: totalPosts });
     }
 };

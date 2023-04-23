@@ -9,7 +9,7 @@ export class AuthMiddleware{
         console.log('req.session', req.session);
         // const { refreshToken, accessToken } = req.signedCookies;
         // console.log('refreshToken, accessToken', refreshToken, accessToken);
-        console.log('req.header(\'authorization\');', req.header('authorization'));
+        // console.log('req.header(\'authorization\');', req.header('authorization'));
         const authHeader = req.header('authorization');
         if (authHeader?.startsWith('Bearer ')){
             const token = authHeader.substring(7, authHeader.length);

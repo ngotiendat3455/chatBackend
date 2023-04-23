@@ -9,7 +9,7 @@ import { movieCategoryService } from '@service/db/movieCategory.service';
 export class Update {
   @joiValidation(movieCategorySchema)
   public async post(req: Request, res: Response): Promise<void> {
-    const { name, code, description } = req.body;
+    const { name, code, description, fee } = req.body;
     const { movieCategoryId } = req.params;
     // const postObjectId: ObjectId = new ObjectId();
     const createdPost: IMovieCategoryDocument = {
@@ -20,7 +20,8 @@ export class Update {
       // createdAt: new Date(),
       updateAt: new Date(),
       code,
-      name
+      name,
+      fee
     } as IMovieCategoryDocument;
     await movieCategoryService.editMovieCategory(movieCategoryId, createdPost);
     res.status(HTTP_STATUS.CREATED).json({ message: 'Movie category updated successfully' });

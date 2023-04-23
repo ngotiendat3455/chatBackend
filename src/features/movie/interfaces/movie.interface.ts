@@ -1,5 +1,6 @@
 import mongoose, { Document } from 'mongoose';
 import { ObjectId } from 'mongodb';
+import { IReactions } from '@reaction/interfaces/reaction.interface';
 
 export interface IMovieDocument extends Document {
   _id: string | ObjectId;
@@ -16,9 +17,12 @@ export interface IMovieDocument extends Document {
   movieLenght: string
   movieFormat: string
   moviePoster: string,
-  movieType: 0 | 1 | 2,
+  movieCategoryId: string | ObjectId;
+  movieCategoryName: string;
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
+  reactions?: IReactions;
+  commentsCount: number;
 }
 
 export interface IQueryComplete {
@@ -33,7 +37,7 @@ export interface IGetMoviesQuery {
   _id?: ObjectId | string;
   movieName?: string;
   movieGenres?: string;
-  movieType?: string;
+  movieCategoryName?: string | ObjectId;
   movieCens?: string;
   movieRelease: string
 }

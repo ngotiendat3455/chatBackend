@@ -8,7 +8,8 @@ const movieCategorySchema: Schema = new Schema({
     createUserId:  { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
     updateUserId:  { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
     createdAt: { type: Date, default: Date.now() },
-    updateAt: { type: Date, default: Date.now() }
+    updateAt: { type: Date, default: Date.now() },
+    fee: { type: Boolean, default: false },
   });
   
 

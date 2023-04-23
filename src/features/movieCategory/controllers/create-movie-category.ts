@@ -8,7 +8,7 @@ import { movieCategoryService } from '@service/db/movieCategory.service';
 export class Create {
   @joiValidation(movieCategorySchema)
   public async post(req: Request, res: Response): Promise<void> {
-    const { name, code, description } = req.body;
+    const { name, code, description, fee } = req.body;
     console.log('req.currentUser', req.currentUser);
     const postObjectId: ObjectId = new ObjectId();
     const createdPost: IMovieCategoryDocument = {
@@ -19,7 +19,8 @@ export class Create {
       createdAt: new Date(),
       updateAt: new Date(),
       code,
-      name
+      name,
+      fee
     } as IMovieCategoryDocument;
     await movieCategoryService.addMovieCategoryToDB(createdPost);
     res.status(HTTP_STATUS.CREATED).json({ message: 'Post created successfully' });

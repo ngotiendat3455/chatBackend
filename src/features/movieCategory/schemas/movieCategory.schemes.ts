@@ -13,7 +13,8 @@ const movieCategorySchema: ObjectSchema = Joi.object().keys({
     createUserId:  Joi.string().optional().allow(null, ''),
     updateUserId: Joi.string().optional().allow(null, ''),
     createdAt: { type: Date, default: Date.now() },
-    updateAt: { type: Date, default: Date.now() }
+    updateAt: { type: Date, default: Date.now() },
+    fee: Joi.boolean().optional().allow(null, false),
 });
 
 export { movieCategorySchema };
