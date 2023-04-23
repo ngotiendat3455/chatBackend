@@ -6,8 +6,9 @@ import { createBullBoard } from '@bull-board/api';
 import Queue, { Job } from 'bull';
 import Logger from 'bunyan';
 import { IEmailJob, IUserJob } from '@user/interfaces/user.interface';
+import { IMovieJobData } from '@root/features/movie/interfaces/movie.interface';
 
-type IBaseJobData = IAuthJob | IUserJob | IEmailJob;
+type IBaseJobData = IAuthJob | IUserJob | IEmailJob | IMovieJobData;
 
 let bullAdapters: BullAdapter[] = [];
 export let serverAdapter: ExpressAdapter;

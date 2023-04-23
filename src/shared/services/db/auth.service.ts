@@ -19,7 +19,7 @@ class AuthService {
     await AuthModel.create(data);
   }
   public async getAuthUserByUsername(username: string): Promise<IAuthDocument> {
-    const user: IAuthDocument = (await AuthModel.findOne({ username: Helpers.firstLetterUppercase(username) }).exec()) as IAuthDocument;
+    const user: IAuthDocument = (await AuthModel.findOne({ username: username }).exec()) as IAuthDocument;
     return user;
   }
   public async getAuthUserByEmail(email: string): Promise<IAuthDocument> {
